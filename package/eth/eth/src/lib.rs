@@ -18,10 +18,10 @@ struct Eth {
 
     /// Protocol Type
     #[genet(typ = "@enum")]
-    r#type: Detach<EthType>,
+    len2: Detach<Node<Uint8, EthType2>>,
 
     /// Protocol Type
-    len: EthType2,
+    len: Detach<EthType2>,
 }
 
 type DUint8 = Detach<Uint8>;
@@ -72,9 +72,8 @@ impl Worker for EthWorker {
                 let payload = parent.data().try_get(14..)?;
                 layer.add_payload(Payload::new(payload, typ));
             }
-            layer.add_attr(
-                attr!(self.eth.attr().len.as_ref().clone(), range: 12..14),
-            );
+            layer.add_attr(attr!(self.eth.attr().len.as_ref().clone(), range: 12..14));
+            layer.add_attr(attr!(self.eth.attr().len2.as_ref().clone(), range: 12..14));
             parent.add_child(layer);
             Ok(Status::Done)
         } else {

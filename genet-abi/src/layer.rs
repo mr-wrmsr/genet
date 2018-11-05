@@ -374,7 +374,7 @@ struct Alias {
 }
 
 pub struct LayerBox<A: SizedAttrField> {
-    attr: A,
+    fields: A,
 }
 
 impl<A: SizedAttrField> LayerBox<A> {
@@ -386,11 +386,11 @@ impl<A: SizedAttrField> LayerBox<A> {
             ..AttrContext::default()
         });
         println!("{:#?}", res);
-        Self { attr }
+        Self { fields: attr }
     }
 
-    pub fn attr(&self) -> &A {
-        &self.attr
+    pub fn fields(&self) -> &A {
+        &self.fields
     }
 }
 

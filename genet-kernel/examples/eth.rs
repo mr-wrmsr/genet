@@ -16,7 +16,7 @@ struct Eth {
 
     // Length or Protocol Type
     #[genet(padding)]
-    _pad: cast::UInt16BE,
+    pad: Node<cast::UInt16BE>,
 
     /// Length
     #[genet(detach)]
@@ -71,6 +71,7 @@ impl Worker for EthWorker {
                 let payload = parent.data().try_get(14..)?;
                 layer.add_payload(Payload::new(payload, typ));
             }
+            println!("{:?}", self.eth.fields().pad.attr().try_get(parent));
             // layer.add_attr(attr!(self.eth.attr().r#type.as_ref().clone(), range: 12..14));
             parent.add_child(layer);
             Ok(Status::Done)

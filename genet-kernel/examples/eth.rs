@@ -15,7 +15,7 @@ struct Eth {
     dst: cast::ByteSlice,
 
     // Length or Protocol Type
-    #[genet(padding)]
+    #[genet(skip)]
     pad: Node<cast::UInt16BE>,
 
     /// Length
@@ -66,6 +66,8 @@ impl Worker for EthWorker {
             } else {
                 layer.add_attr(&TYPE_ATTR_HEADER);
             }
+            let len2: u16 = self.eth.fields().pad.attr().try_get(parent)?.try_into()?;
+            if len2 <= 1500 {}
             if let Some((typ, attr)) = get_type(len) {
                 layer.add_attr(attr!(attr, range: 12..14));
                 let payload = parent.data().try_get(14..)?;

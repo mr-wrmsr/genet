@@ -68,13 +68,12 @@ impl Worker for EthWorker {
             }
             let len2: u16 = self.eth.fields().pad.attr().try_get(parent)?.try_into()?;
             if len2 <= 1500 {}
+            layer.add_attr_offset(&self.eth.fields().len, 0);
             if let Some((typ, attr)) = get_type(len) {
                 layer.add_attr(attr!(attr, range: 12..14));
                 let payload = parent.data().try_get(14..)?;
                 layer.add_payload(Payload::new(payload, typ));
             }
-            println!("{:?}", self.eth.fields().pad.attr().try_get(parent));
-            // layer.add_attr(attr!(self.eth.attr().r#type.as_ref().clone(), range: 12..14));
             parent.add_child(layer);
             Ok(Status::Done)
         } else {
